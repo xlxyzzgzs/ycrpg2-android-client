@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">异常生物见闻录</string>
+
+    <string name="close_confirm_title">确认退出？</string>
+    <string name="close_confirm_message">未保存的进度将会丢失</string>
+    <string name="close_confirm_yes">是</string>
+    <string name="close_confirm_no">否</string>
+
+    <string name="remote_domain">ycrpg.xyzzgame.com</string>
+    <string name="local_domain">local.ycrpg.xyzzgame.com</string>
+    <string name="remote_root_folder">/</string>
+    <string name="local_root_folder">/</string>
+    <string name="remote_index_url">https://ycrpg.xyzzgame.com/index.html</string>
+    <string name="local_index_url">https://local.ycrpg.xyzzgame.com/index.html</string>
+
+    <string name="preference_file_key">com.xyzzgame.ycrpg.WebViewFileKey</string>
+    <string name="init_complete_key">INIT_COMPLETE</string>
+
+</resources>
