@@ -12,16 +12,22 @@ import android.webkit.WebViewClient;
 import androidx.annotation.NonNull;
 import androidx.webkit.WebViewAssetLoader;
 
+import com.xyzzgame.ycrpg.jsinterface.FileUtils;
+import com.xyzzgame.ycrpg.jsinterface.UpdateUtils;
+
 import java.io.File;
 
 public class WebViewHelper extends WebView {
     public WebViewAssetLoader assetLoader;
-    public UpdateHelper updateHelper;
+    public Context context;
+    public FileUtils fileUtils;
+    public UpdateUtils updateUtils;
 
     @SuppressLint("JavascriptInterface")
     public WebViewHelper(@NonNull Context context) {
         super(context);
-        updateHelper = new UpdateHelper(context, this);
+        this.context = context;
+
         changeWebViewSetting();
         setWebContentsDebuggingEnabled(true);
         setWebChromeClient(new WebChromeClient());
@@ -31,16 +37,25 @@ public class WebViewHelper extends WebView {
                 return assetLoader.shouldInterceptRequest(request.getUrl());
             }
         });
-        addJavascriptInterface(updateHelper, "updateHelper");
+
+        fileUtils = new FileUtils(context, this);
+        updateUtils = new UpdateUtils(context, this);
 
         assetLoader = new WebViewAssetLoader.Builder()
                 .setDomain(context.getString(R.string.local_domain))
                 .addPathHandler(context.getString(R.string.local_root_folder),
                         new WebViewAssetLoader.InternalStoragePathHandler(
-                                context, new File(updateHelper.downloadHelper.filePrefix)
+                                context, fileUtils.rootFolder
                         )
                 ).setHttpAllowed(true)
                 .build();
+
+        addAllJavascriptInterface();
+    }
+
+    public void addAllJavascriptInterface() {
+        addJavascriptInterface(fileUtils, "FileUtils");
+        addJavascriptInterface(updateUtils, "UpdateUtils");
     }
 
     @SuppressLint("SetJavaScriptEnabled")

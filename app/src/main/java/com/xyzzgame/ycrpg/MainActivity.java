@@ -2,10 +2,12 @@ package com.xyzzgame.ycrpg;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,29 +20,34 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         hideSystemUI();
-
         context = this;
         webView = new WebViewHelper(this);
-        setContentView(webView);
 
-        SharedPreferences preferences= context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-        boolean isInit = preferences.getBoolean(context.getString(R.string.init_complete_key),false);
-        if(isInit){
+        SharedPreferences preferences = context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        boolean isInit = preferences.getBoolean(context.getString(R.string.init_complete_key), false);
+        if (isInit) {
             webView.loadUrl(context.getString(R.string.local_index_url));
-        }else{
+        } else {
             webView.loadUrl(context.getString(R.string.remote_index_url));
         }
+
+        setContentView(webView);
     }
 
 
     @Override
     public void onBackPressed() {
+        MainActivity activity = this;
         new AlertDialog.Builder(this)
                 .setTitle(context.getString(R.string.close_confirm_title))
                 .setMessage(context.getString(R.string.close_confirm_message))
-                .setPositiveButton(context.getString(R.string.close_confirm_yes), (dialog, which) -> finish())
+                .setPositiveButton(context.getString(R.string.close_confirm_yes), (dialog, which) -> activity.confirmQuit())
                 .setNegativeButton(context.getString(R.string.close_confirm_no), null)
                 .show();
+    }
+
+    public void confirmQuit() {
+        super.onBackPressed();
     }
 
     @Override
@@ -68,4 +75,9 @@ public class MainActivity extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_FULLSCREEN);
     }
 
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        setContentView(webView);
+    }
 }
