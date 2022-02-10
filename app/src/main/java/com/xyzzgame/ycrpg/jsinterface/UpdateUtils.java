@@ -63,24 +63,20 @@ public class UpdateUtils {
     public void downloadFullUrl(String fileName, String urlString, String success, String fail) {
         File file = fileNameToFile(fileName);
         URL url;
-        InputStream is ;
+        InputStream is;
         HttpURLConnection urlConnection = null;
         OutputStream os = null;
-        int fileSize;
+
         try {
             url = new URL(urlString);
 
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.connect();
+            String encoding = urlConnection.getContentEncoding();
             is = new BufferedInputStream(urlConnection.getInputStream());
             os = new BufferedOutputStream(new FileOutputStream(file));
-            int downloaded = Utils.fromInToOutStream(is, os);
+            Utils.fromInToOutStream(is, os);
 
-            fileSize = urlConnection.getContentLength();
-
-            if (fileSize != downloaded) {
-                throw new IOException("File size is not right");
-            }
             evaluateJavascript(success);
         } catch (IOException e) {
             e.printStackTrace();
@@ -88,15 +84,13 @@ public class UpdateUtils {
         } finally {
             Utils.closeOutputStream(os);
             Utils.disconnectConnection(urlConnection);
-            //noinspection ResultOfMethodCallIgnored
-            file.delete();
         }
 
     }
 
     @JavascriptInterface
-    public void downloadRelativeUrl(String fileName,String urlString, String success, String fail){
-        downloadFullUrl(fileName,this.urlPrefix+urlString,success,fail);
+    public void downloadRelativeUrl(String fileName, String urlString, String success, String fail) {
+        downloadFullUrl(fileName, this.urlPrefix + urlString, success, fail);
     }
 
     @JavascriptInterface
@@ -126,6 +120,6 @@ public class UpdateUtils {
 
     @JavascriptInterface
     public void updateFile(String fileName, String success, String fail) {
-        downloadRelativeUrl(fileName,fileName,success,fail);
+        downloadRelativeUrl(fileName, fileName, success, fail);
     }
 }

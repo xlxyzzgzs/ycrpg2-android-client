@@ -248,15 +248,6 @@ public class FileUtils {
     }
 
     @JavascriptInterface
-    public void test(String name) {
-        runInWebViewThread(() -> {
-            webView.addJavascriptInterface(new FileUtils(context, webView), name);
-            webView.loadData("", "text/html", null);
-            webView.loadUrl("javascript:console.log(window.FileUtils)");
-        });
-    }
-
-    @JavascriptInterface
     public String readTextFile(String fileName) {
         try (InputStream is = new BufferedInputStream(new FileInputStream(fileNameToFile(fileName)))) {
             return new String(Utils.readAllBytes(is), StandardCharsets.UTF_8);
