@@ -94,16 +94,18 @@ public class UpdateUtils {
     }
 
     @JavascriptInterface
-    public void updateFileCompleted(boolean bool) {
+    public void updateFileCompleted(boolean bool, boolean needReload) {
         SharedPreferences preferences = context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         boolean isInit = preferences.getBoolean(context.getString(R.string.init_complete_key), false);
         if (bool && !isInit) {
             editor.putBoolean(context.getString(R.string.init_complete_key), true);
+            editor.apply();
+        }
+        if (needReload) {
             ContextCompat.getMainExecutor(context).execute(
                     () -> webView.loadUrl(context.getString(R.string.local_index_url))
             );
-            editor.apply();
         }
     }
 
@@ -121,5 +123,14 @@ public class UpdateUtils {
     @JavascriptInterface
     public void updateFile(String fileName, String success, String fail) {
         downloadRelativeUrl(fileName, fileName, success, fail);
+    }
+
+    @JavascriptInterface
+    public void startUpdateFiles() {
+        SharedPreferences preferences = context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        boolean isInit = preferences.getBoolean(context.getString(R.string.init_complete_key), false);
+        editor.putBoolean(context.getString(R.string.init_complete_key), false);
+        editor.apply();
     }
 }
