@@ -111,12 +111,12 @@ public class UpdateUtils {
 
     @JavascriptInterface
     public String getHashInfoJson() {
-        File file = fileNameToFile("file_info.json");
+        File file = fileNameToFile("file_info_local.json");
         try (InputStream is = new BufferedInputStream(new FileInputStream(file))) {
             return new String(Utils.readAllBytes(is), StandardCharsets.UTF_8);
         } catch (IOException e) {
             e.printStackTrace();
-            return "{}";
+            return "{\"is_file\":false,\"is_dir\":true,\"children\":[],\"sha_512\":\"\",\"file_name\":\"\"}";
         }
     }
 
