@@ -10,6 +10,7 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    environment: webdav
 
     steps:
     - uses: actions/checkout@v2
@@ -32,6 +33,16 @@ jobs:
         automatic_release_tag: "latest"
         prerelease: true
         title: "auto build for test debug version"
+        files: |
+          app/build/outputs/apk/debug/app-debug.apk
+
+    - name: push to webdav
+      uses: bxb100/action-upload-webdav@main
+      with:
+        webdav_address: ${{ secrets.WEBDAV_ADDRESS }}
+        webdav_username: ${{ secrets.WEBDAV_USERNAME }}
+        webdav_password: ${{ secrets.WEBDAV_PASSWORD }}
+        webdav_upload_path: "异常生物见闻录RPG/安卓"
         files: |
           app/build/outputs/apk/debug/app-debug.apk
       
