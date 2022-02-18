@@ -42,11 +42,9 @@ public class WebViewHelper extends WebView {
         updateUtils = new UpdateUtils(context, this);
 
         assetLoader = new WebViewAssetLoader.Builder()
-                .setDomain(context.getString(R.string.local_domain))
-                .addPathHandler(context.getString(R.string.local_root_folder),
-                        new WebViewAssetLoader.InternalStoragePathHandler(
-                                context, fileUtils.rootFolder
-                        )
+                .addPathHandler(
+                        "/",
+                        new WebViewAssetLoader.AssetsPathHandler(context)
                 ).setHttpAllowed(true)
                 .build();
 

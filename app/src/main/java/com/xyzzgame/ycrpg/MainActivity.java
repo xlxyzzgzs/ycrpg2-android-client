@@ -23,13 +23,7 @@ public class MainActivity extends AppCompatActivity {
         context = this;
         webView = new WebViewHelper(this);
 
-        SharedPreferences preferences = context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-        boolean isInit = preferences.getBoolean(context.getString(R.string.init_complete_key), false);
-        if (isInit) {
-            webView.loadUrl(context.getString(R.string.local_index_url));
-        } else {
-            webView.loadUrl(context.getString(R.string.remote_index_url));
-        }
+        webView.loadUrl("https://appassets.androidplatform.net/www/index.html");
 
         setContentView(webView);
     }
