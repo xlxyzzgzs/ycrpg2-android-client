@@ -110,13 +110,13 @@ public class UpdateUtils {
     }
 
     @JavascriptInterface
-    public String getHashInfoJson() {
+    public String getLocalInfoJson() {
         File file = fileNameToFile("file_info_local.json");
         try (InputStream is = new BufferedInputStream(new FileInputStream(file))) {
             return new String(Utils.readAllBytes(is), StandardCharsets.UTF_8);
         } catch (IOException e) {
             e.printStackTrace();
-            return "{\"is_file\":false,\"is_dir\":true,\"children\":[],\"sha_512\":\"\",\"file_name\":\"\"}";
+            return "{\"content_version\":1,\"content\":{\"game_version\":\"V0.0.0\"}}";
         }
     }
 
